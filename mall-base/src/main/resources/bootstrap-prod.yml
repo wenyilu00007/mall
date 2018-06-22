@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: mall-base
+  cloud:
+    config:
+      enabled: false
+    consul:
+      host: azure-cn.consul.orangeconnex.com
+      port: 8500
+      enabled: true
+      config:
+        enabled: true
+        format: YAML
+        data-key: configuration
+      discovery:
+        enabled: true
+        instance-id: ${spring.application.name}${spring.cloud.client.ipAddress}:${server.port}
+        serviecName: ${spring.application.name}
+        health-check-interval: 1s
+        healthCheckPath: ${management.context-path}/health
+        register: true
+        scheme: http
+        preferIpAddress: true
+        heartbeat:
+          enabled: true
+          ttl-unit: s
+          ttl-value: 2
+        catalog-services-watch-delay: 1

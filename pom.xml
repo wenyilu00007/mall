@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.wyl.mall</groupId>
+    <artifactId>mall</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>mall-shared</module>
+        <module>mall-common</module>
+        <module>mall-base</module>
+        <module>mall-util</module>
+        <module>mall-proxy</module>
+        <module>mall-permission</module>
+    </modules>
+
+    <properties>
+        <zodiac.version>1.0-SNAPSHOT</zodiac.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <springboot.version>1.5.6.RELEASE</springboot.version>
+        <spring.session.data.redis.version>1.3.1.RELEASE</spring.session.data.redis.version>
+        <fastjson.version>1.2.34</fastjson.version>
+        <druid.version>1.0.27</druid.version>
+        <mysql.connector.version>5.1.41</mysql.connector.version>
+        <mybatis.spring.boot.version>1.2.0</mybatis.spring.boot.version>
+        <pagehelp.verion>4.1.1</pagehelp.verion>
+        <consul.version>1.2.1.RELEASE</consul.version>
+        <cas.client.version>3.4.1</cas.client.version>
+        <swagger.version>2.7.0</swagger.version>
+        <tk.mapper.version>1.1.3</tk.mapper.version>
+        <spring-cloud.version>Dalston.SR2</spring-cloud.version>
+        <pinyin4j.version>2.5.0</pinyin4j.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>${springboot.version}</version>
+            <type>pom</type>
+        </dependency>
+        <!-- springboot devtools -->
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-devtools</artifactId>-->
+        <!--<version>${springboot.version}</version>-->
+        <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
+        <!-- springboot actuator-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+        <!-- springboot test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${springboot.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- springboot aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+        <!-- springboot data redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.wyl.zodiac</groupId>
+            <artifactId>zodiac-springboot</artifactId>
+            <version>${zodiac.version}</version>
+        </dependency>
+
+        <!-- springcloud consul config-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
+        </dependency>
+
+        <!-- springcloud consul discovery-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+
+        <!-- mysql driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+
+        <!-- HanyuPinyin-->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>${pinyin4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <!-- 如果没有该配置，java 路径下的配置文件不会被编译-->
+            <resource>
+                <directory>${project.basedir}/src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.ftl</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

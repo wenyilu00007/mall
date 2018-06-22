@@ -1,0 +1,163 @@
+server:
+  port: 8427
+  context-path:
+  tomcat:
+    uri-encoding: UTF-8
+management:
+  security:
+    enabled: false
+  health:
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
+spring:
+  application:
+    name: mall-base
+  cloud:
+    config:
+        enabled: false
+    consul:
+      host: 127.0.0.1
+#      host: sctest.hoau.net
+#      host: 10.39.232.63
+      port: 8500
+      enabled: true
+      config:
+        enabled: true
+        format: YAML
+        data-key: configuration
+      discovery:
+        enabled: true
+        instance-id: ${spring.application.name}${spring.cloud.client.ipAddress}:${server.port}
+        serviecName: ${spring.application.name}
+        health-check-interval: 10s
+        healthCheckPath: ${server.context-path}/health
+        register: true
+        scheme: http
+        preferIpAddress: true
+        ip-address: 127.0.0.1
+  aop:
+    proxy-target-class: true
+  session:
+    enable: true
+    store-type: redis
+  redis:
+    enable: true
+    database: 9
+    password: testx
+    sentinel:
+      master: mymaster
+      nodes: 10.39.232.213:26380,10.39.232.214:26380,10.39.232.215:26380
+    pool:
+      max-idle: -1
+      max-wait: 3000
+      max-active: -1
+      min-idle: 10
+  rabbitmq:
+    host: 10.39.232.235
+    addresses: 10.39.232.235,10.39.232.236
+    username: admin
+    password: root123
+zodiac:
+  web:
+    cors:
+      enable: true
+    context:
+      enable: false
+      excludeUrlPatterns: [/health,/users/*/actions/login,/users/*/actions/logout,/swagger*]
+      withoutCasOfflineRedirectUrl: http://localhost:4049
+  fastjson:
+    enable: true
+    supportedMediaTypes: [text/html;charset=UTF-8, application/json;charset=UTF-8]
+    features: [AllowSingleQuotes, AllowUnQuotedFieldNames, AllowArbitraryCommas, DisableCircularReferenceDetect, DisableSpecialKeyDetect]
+  # cas相关配置
+  cas:
+    client:
+      enable: false
+      casServerUrlPrefix: https://casx.orangeconnex.com/cas
+      casServerLoginUrl: https://casx.orangeconnex.com/cas/login
+      appServerName: http://localhost:8427/mall-base/redirect
+      fontMainPageUrl: http://localhost:4049
+      casServerLogoutUrl: https://casx.orangeconnex.com/cas/logout
+      authenticationRedirectStrategyClass:  com.wyl.zodiac.springboot.autoconfig.cas.ZodiacAuthenticationRedirectStrategy
+      authenticationExclusions: /autoconfig|/health
+      validationExclusions: /autoconfig|/health
+      redirectAfterValidation: false
+      redirectServerUrl: http://localhost:8427/mall-base/redirect
+  log:
+    kafka:
+      servers: bootstrap.servers=10.39.251.26:9092,10.39.251.27:9092
+    # 日志拦截器
+    filter:
+      enable: true
+      needLogRequest: true
+      needLogResponse: true
+      needLogHeader: true
+      needLogPayload: true
+      maxPayloadLength: 2097152
+  # RequestHolder 开启配置
+  request:
+    holder:
+      enable: true
+  # 消息国际化配置
+  message:
+    enable: true
+    default-country: CN
+    default-lang: zh
+    cookie-maxAge: 100000000
+    cookieLanguageNameKey: language
+  dynamic:
+    datasource:
+      enable: true
+      defaultDatasourceName: master
+      datasourceList:
+      - name: master
+        url: jdbc:mysql://10.39.232.61:3307/aquarius_dev
+        username: aquarius_dev
+        password: aquarius_dev
+        driverClassName: com.mysql.jdbc.Driver
+        maxActive: 50
+        initialSize: 5
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+      - name: slave
+        url: jdbc:mysql://10.39.232.61:3307/aquarius_dev
+        username: aquarius_dev
+        password: aquarius_dev
+        driverClassName: com.mysql.jdbc.Driver
+        maxActive: 50
+        initialSize: 5
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+  swagger:
+    enable: true
+    title: 信息控制系统-基础数据管理服务
+    description: 信息控制系统-基础数据服务接口列表
+    version: 1.0
+    contactName: 供应链研发中心
+    paths: [/users,/resources,/formulas,/districts,/base/remote-regions,/base,/upload]
+logging:
+  level:
+    root: INFO
+    com:
+      hoau:
+        aquarius:
+          base:
+            dao: debug
+  file: logback.log
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+mapper:
+  not-empty: true

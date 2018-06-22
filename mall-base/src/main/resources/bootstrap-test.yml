@@ -1,0 +1,41 @@
+server:
+  port: 8427
+  context-path:
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: mall-base
+  cloud:
+    config:
+        enabled: false
+    consul:
+      #host: localhost
+      host: 10.39.232.63
+      port: 8500
+      enabled: true
+      config:
+        enabled: true
+        format: YAML
+        data-key: configuration
+      discovery:
+        enabled: true
+        instance-id: ${spring.application.name}${spring.cloud.client.ipAddress}:${server.port}
+        serviecName: ${spring.application.name}
+        health-check-interval: 1s
+        healthCheckPath: ${management.context-path}/health
+        preferIpAddress: true
+        heartbeat:
+          enabled: true
+          ttl-unit: s
+          ttl-value: 2
+        catalog-services-watch-delay: 1
+  aop:
+    auto: true
+zodiac:
+  log:
+    kafka:
+      servers: bootstrap.servers=10.39.232.218:9092
+management:
+  security:
+    enabled: false

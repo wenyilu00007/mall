@@ -1,0 +1,135 @@
+server:
+  port: 8427
+  context-path:
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: mall-base
+  cloud:
+    config:
+        enabled: false
+    consul:
+#      host: 127.0.0.1
+#      host: sctest.hoau.net
+      host: 10.39.232.63
+      port: 8500
+      enabled: true
+      config:
+        enabled: true
+        format: YAML
+        data-key: configuration
+      discovery:
+        enabled: true
+        instance-id: ${spring.application.name}${spring.cloud.client.ipAddress}:${server.port}
+        serviecName: ${spring.application.name}
+        health-check-interval: 10s
+        healthCheckPath: ${management.context-path}/health
+        register: true
+        scheme: http
+        preferIpAddress: true
+        ip-address: 127.0.0.1
+  aop:
+    auto: true
+  session:
+    enable: true
+    store-type: redis
+  redis:
+    enable: true
+    database: 6
+    password: testx
+    sentinel:
+      master: mymaster
+      nodes: 10.39.232.213:26380,10.39.232.214:26380,10.39.232.215:26380
+    pool:
+      max-idle: -1
+      max-wait: 3000
+      max-active: -1
+      min-idle: 10
+  rabbitmq:
+    host: 10.39.232.235
+    addresses: 10.39.232.235,10.39.232.236
+    username: order
+    password: order
+    virtual-host: /
+    port: 5672
+zodiac:
+  web:
+    cors:
+      enable: true
+    context:
+      enable: false
+      gatewayEnable: true
+      gatewayLogoutServerUrl: https://casx.hoau.net/cas/logout
+      gatewayLogoutRedirectUrl: http://testx.hoau.net/redirect?systemCode=mall-base
+      excludeUrlPatterns: [/health,/users/*/actions/login,/users/*/actions/logout,/swagger*,/redirect]
+      withoutCasOfflineRedirectUrl: http://testx.hoau.net/mall-face
+  fastjson:
+    enable: true
+    supportedMediaTypes: [text/html;charset=UTF-8, application/json;charset=UTF-8]
+    features: [AllowSingleQuotes, AllowUnQuotedFieldNames, AllowArbitraryCommas, DisableCircularReferenceDetect, DisableSpecialKeyDetect]
+  log:
+    kafka:
+      servers: bootstrap.servers=10.39.251.26:9092,10.39.251.27:9092
+    # 日志拦截器
+    filter:
+      enable: true
+      needLogRequest: true
+      needLogResponse: true
+      needLogHeader: true
+      needLogPayload: true
+      maxPayloadLength: 2097152
+  # RequestHolder 开启配置
+  request:
+    holder:
+      enable: true
+  # 消息国际化配置
+  message:
+    enable: true
+    default-country: CN
+    default-lang: zh
+    cookie-maxAge: 100000000
+    cookieLanguageNameKey: language
+  dynamic:
+    datasource:
+      enable: true
+      defaultDatasourceName: master
+      datasourceList:
+      - name: master
+        url: jdbc:mysql://10.39.232.216:3306/aquarius
+        username: aquarius_user
+        password: aquarius_user
+        driverClassName: com.mysql.jdbc.Driver
+        maxActive: 50
+        initialSize: 5
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+  swagger:
+    enable: true
+    title: PRODUCT系统
+    description: PRODUCT系统接口列表
+    version: 1.0
+    contactName: 供应链研发中心
+    paths: [/project,/districts,/base/trackingNumber,/formulas]
+logging:
+  level:
+    root: INFO
+    com:
+      hoau:
+        aquarius:
+          base:
+            dao: debug
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+mapper:
+  not-empty: true
+management:
+  security:
+    enabled: false
